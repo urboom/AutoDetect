@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="xyz.yunikitin.autodetect.MainActivity"
-    android:background="#dc09496c">
+    android:background="#09496c">
 
     <TextView
         android:layout_width="wrap_content"
