@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="xyz.yunikitin.autodetect.MainActivity"
-    android:background="#09496c">
+    tools:context="xyz.yunikitin.autodetect.MainActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -24,7 +23,8 @@
         android:id="@+id/imageView"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/ic_directions_car_24dp"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:contentDescription="appicon" />
 
     <Button
         android:layout_width="wrap_content"

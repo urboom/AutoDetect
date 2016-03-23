@@ -3,4 +3,11 @@
     <string name="registr_button">Реєстрація</string>
     <string name="take_photo_button">Зробити Фото</string>
     <string name="openDB_button">Переглянути базу</string>
+    <string name="main_text_registr">Заповніть нижче всі поля для реєстрації автомобіля:</string>
+    <string name="number">Номер:</string>
+    <string name="brand">Марка:</string>
+    <string name="color">Колір:</string>
+    <string name="city">Місто:</string>
+    <string name="phone">Телефон:</string>
+    <string name="email">Email:</string>
 </resources>
