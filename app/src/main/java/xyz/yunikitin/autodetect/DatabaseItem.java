@@ -37,6 +37,11 @@ public class DatabaseItem  {
 
     }
 
+    @Override
+    public String toString() {
+        return getNumberPlate();
+    }
+
     public DatabaseItem(String id, String numberPlate, String brandAuto) {
         this.setId(id);
         this.setNumberPlate(numberPlate);

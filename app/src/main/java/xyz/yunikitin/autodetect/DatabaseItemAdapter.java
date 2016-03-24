@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
+
 /**
  * Adapter to bind a ToDoItem List to a view
  */
@@ -41,6 +43,8 @@ public class DatabaseItemAdapter extends ArrayAdapter<DatabaseItem> {
             row = inflater.inflate(mLayoutResourceId, parent, false);
         }
         row.setTag(currentItem);
+        final TextView textDatabaseField = (TextView) row.findViewById(R.id.textDatabaseField);
+        textDatabaseField.setText(currentItem.getNumberPlate());
         return row;
     }
 }
