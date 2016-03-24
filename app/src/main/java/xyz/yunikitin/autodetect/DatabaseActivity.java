@@ -9,19 +9,29 @@ import android.os.Bundle;
 import android.widget.ListView;
 
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
-import com.microsoft.windowsazure.mobileservices.table.MobileServiceTable;
+import com.microsoft.windowsazure.mobileservices.table.query.Query;
+import com.microsoft.windowsazure.mobileservices.table.query.QueryOperations;
+import com.microsoft.windowsazure.mobileservices.table.sync.MobileServiceSyncContext;
+import com.microsoft.windowsazure.mobileservices.table.sync.MobileServiceSyncTable;
+import com.microsoft.windowsazure.mobileservices.table.sync.localstore.ColumnDataType;
+import com.microsoft.windowsazure.mobileservices.table.sync.localstore.MobileServiceLocalStoreException;
+import com.microsoft.windowsazure.mobileservices.table.sync.localstore.SQLiteLocalStore;
+import com.microsoft.windowsazure.mobileservices.table.sync.synchandler.SimpleSyncHandler;
 
 import java.net.MalformedURLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static com.microsoft.windowsazure.mobileservices.table.query.QueryOperations.val;
 
 
 public class DatabaseActivity extends AppCompatActivity {
-    
+
     private MobileServiceClient mClient;
-    private MobileServiceTable<DatabaseItem> mDatabaseTable;
+    private MobileServiceSyncTable<DatabaseItem> mDatabaseTable;
+   // private MobileServiceTable<DatabaseItem> mDatabaseTable;
     private DatabaseItemAdapter mAdapter;
 
     @Override
@@ -38,12 +48,13 @@ public class DatabaseActivity extends AppCompatActivity {
 
             // Get the Mobile Service Table instance to use
 
-            mDatabaseTable = mClient.getTable(DatabaseItem.class);
+            //mDatabaseTable = mClient.getTable(DatabaseItem.class);
 
             // Offline Sync
-            //mToDoTable = mClient.getSyncTable("ToDoItem", ToDoItem.class);
+            mDatabaseTable = mClient.getSyncTable("DatabaseItem", DatabaseItem.class);
 
             //Init local storage
+            initLocalStore().get();
 
             mAdapter = new DatabaseItemAdapter(this, R.layout.row_list_database);
             ListView listViewDatabase = (ListView) findViewById(R.id.listViewDatabase);
@@ -64,10 +75,10 @@ public class DatabaseActivity extends AppCompatActivity {
             protected Void doInBackground(Void... params) {
 
                 try {
-                    final List<DatabaseItem> results = refreshItemsFromMobileServiceTable();
+                    //final List<DatabaseItem> results = refreshItemsFromMobileServiceTable();
 
                     //Offline Sync
-                    //final List<ToDoItem> results = refreshItemsFromMobileServiceTableSyncTable();
+                    final List<DatabaseItem> results = refreshItemsFromMobileServiceTableSyncTable();
 
                     runOnUiThread(new Runnable() {
                         @Override
@@ -80,7 +91,6 @@ public class DatabaseActivity extends AppCompatActivity {
                 } catch (final Exception e){
                     createAndShowDialogFromTask(e, "Error");
                 }
-
                 return null;
             }
         };
@@ -95,9 +105,120 @@ public class DatabaseActivity extends AppCompatActivity {
         }
     }
 
-    private List<DatabaseItem> refreshItemsFromMobileServiceTable() throws ExecutionException, InterruptedException {
-        return mDatabaseTable.where().field("complete").eq(val(false)).execute().get();
+    /*private void refreshItemsFromTable() {
+
+        // Get the items that weren't marked as completed and add them in the
+        // adapter
+        AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>(){
+            @Override
+            protected Void doInBackground(Void... params) {
+
+                try {
+                    //final List<DatabaseItem> results = refreshItemsFromMobileServiceTable();
+
+                    //Offline Sync
+                    final List<DatabaseItem> results = refreshItemsFromMobileServiceTableSyncTable();
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mAdapter.clear();
+
+                            for (DatabaseItem item : results) {
+                                mAdapter.add(item);
+                            }
+                        }
+                    });
+                } catch (final Exception e){
+                    createAndShowDialogFromTask(e, "Error");
+                }
+                return null;
+            }
+        };
+        runAsyncTask(task);
+    }*/
+
+    //Offline Sync
+    /**
+     * Refresh the list with the items in the Mobile Service Sync Table
+     */
+    private List<DatabaseItem> refreshItemsFromMobileServiceTableSyncTable() throws ExecutionException, InterruptedException {
+        //sync the data
+        sync().get();
+        Query query = QueryOperations.field("complete").
+                eq(val(false));
+        return mDatabaseTable.read(query).get();
     }
+
+    //Offline Sync
+    /**
+     * Sync the current context and the Mobile Service Sync Table
+     * @return
+     */
+    private AsyncTask<Void, Void, Void> sync() {
+        AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>(){
+            @Override
+            protected Void doInBackground(Void... params) {
+                try {
+                    MobileServiceSyncContext syncContext = mClient.getSyncContext();
+                    syncContext.push().get();
+                    mDatabaseTable.pull(null).get();
+                } catch (final Exception e) {
+                    createAndShowDialogFromTask(e, "Error");
+                }
+                return null;
+            }
+        };
+        return runAsyncTask(task);
+    }
+
+    /**
+     * Initialize local storage
+     * @return
+     * @throws MobileServiceLocalStoreException
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
+    private AsyncTask<Void, Void, Void> initLocalStore() throws MobileServiceLocalStoreException, ExecutionException, InterruptedException {
+
+        AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                try {
+
+                    MobileServiceSyncContext syncContext = mClient.getSyncContext();
+
+                    if (syncContext.isInitialized())
+                        return null;
+
+                    SQLiteLocalStore localStore = new SQLiteLocalStore(mClient.getContext(), "OfflineStore", null, 1);
+
+                    Map<String, ColumnDataType> tableDefinition = new HashMap<>();
+                    tableDefinition.put("id", ColumnDataType.String);
+                    tableDefinition.put("text", ColumnDataType.String);
+                    tableDefinition.put("complete", ColumnDataType.Boolean);
+                    tableDefinition.put("plateNumber", ColumnDataType.String);
+                    tableDefinition.put("brandAuto", ColumnDataType.String);
+
+                    localStore.defineTable("DatabaseItem", tableDefinition);
+
+                    SimpleSyncHandler handler = new SimpleSyncHandler();
+
+                    syncContext.initialize(localStore, handler).get();
+
+                } catch (final Exception e) {
+                    createAndShowDialogFromTask(e, "Error");
+                }
+                return null;
+            }
+        };
+        return runAsyncTask(task);
+    }
+
+
+    /*private List<DatabaseItem> refreshItemsFromMobileServiceTable() throws ExecutionException, InterruptedException {
+        return mDatabaseTable.where().field("complete").eq(val(false)).execute().get();
+    }*/
 
     private void createAndShowDialogFromTask(final Exception exception, String title) {
         runOnUiThread(new Runnable() {
