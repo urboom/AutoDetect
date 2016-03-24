@@ -160,7 +160,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Опис події:"
-            android:id="@+id/textView2"
+            android:id="@+id/textEvent"
             android:layout_gravity="center_horizontal"
             android:textColor="#000000" />
 
@@ -169,16 +169,19 @@
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
             android:ems="10"
-            android:id="@+id/editText"
+            android:id="@+id/editEvent"
             android:layout_gravity="center_horizontal"
             android:elegantTextHeight="false" />
     </LinearLayout>
 
     <Button
-        android:id="@+id/buttonAddToDo"
+        android:id="@+id/buttonAddRegistr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="addItem"
         android:text="Зараєструвати"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:elegantTextHeight="false"
+        android:background="#3f51b4"
+        android:textColor="#ffffff" />
 </LinearLayout>

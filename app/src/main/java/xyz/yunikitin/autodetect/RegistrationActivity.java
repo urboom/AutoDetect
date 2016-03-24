@@ -57,9 +57,12 @@ public class RegistrationActivity extends AppCompatActivity {
     /**
      * EditText containing the "New To Do" text
      */
-    private EditText mBrandAuto;
-
+    private EditText mBrandAuto, mEvent;
     private EditText mNumberPlate;
+    private EditText mColorAuto;
+    private EditText mCity;
+    private EditText mPhone;
+    private EditText mEmail;
 
     /**
      * Initializes the activity
@@ -90,7 +93,11 @@ public class RegistrationActivity extends AppCompatActivity {
 
             mNumberPlate = (EditText) findViewById(R.id.editPlateNumber);
             mBrandAuto = (EditText) findViewById(R.id.editBrand);
-
+            mColorAuto = (EditText) findViewById(R.id.editColorAuto);
+            mCity = (EditText) findViewById(R.id.editCityText);
+            mPhone = (EditText) findViewById(R.id.editPhone);
+            mEmail = (EditText) findViewById(R.id.editEmail);
+            mEvent = (EditText) findViewById(R.id.editEvent);
 
         } catch (MalformedURLException e) {
             createAndShowDialog(new Exception("There was an error creating the Mobile Service. Verify the URL"), "Error");
@@ -108,6 +115,11 @@ public class RegistrationActivity extends AppCompatActivity {
 
         item.setNumberPlate(mNumberPlate.getText().toString());
         item.setBrandAuto(mBrandAuto.getText().toString());
+        item.setColorAuto(mColorAuto.getText().toString());
+        item.setCity(mCity.getText().toString());
+        item.setPhone(mPhone.getText().toString());
+        item.setEmail(mEmail.getText().toString());
+        item.setEvent(mEvent.getText().toString());
 
         // Insert the new item
         AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>(){
@@ -125,6 +137,11 @@ public class RegistrationActivity extends AppCompatActivity {
 
         mNumberPlate.setText("");
         mBrandAuto.setText("");
+        mColorAuto.setText("");
+        mCity.setText("");
+        mPhone.setText("");
+        mEmail.setText("");
+        mEvent.setText("");
     }
 
     /**
@@ -230,5 +247,4 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
     }
-
 }
