@@ -5,9 +5,11 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.microsoft.windowsazure.mobileservices.table.MobileServiceTable;
@@ -110,6 +112,8 @@ public class RegistrationActivity extends AppCompatActivity {
         if (mClient == null) {
             return;
         }
+        final Toast toast = Toast.makeText(getApplicationContext(), "Номер успішно зареєстровано", Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER, 0,0);
         // Create a new item
         final DatabaseItem item = new DatabaseItem();
 
@@ -127,6 +131,7 @@ public class RegistrationActivity extends AppCompatActivity {
             protected Void doInBackground(Void... params) {
                 try {
                   addItemInTable(item);
+                    toast.show();
                 } catch (final Exception e) {
                     createAndShowDialogFromTask(e, "Error");
                 }
@@ -142,6 +147,8 @@ public class RegistrationActivity extends AppCompatActivity {
         mPhone.setText("");
         mEmail.setText("");
         mEvent.setText("");
+
+
     }
 
     /**
