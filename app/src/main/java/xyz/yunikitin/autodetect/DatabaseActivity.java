@@ -69,7 +69,6 @@ public class DatabaseActivity extends AppCompatActivity {
     }
 
     public void getItem(){
-
         AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>(){
             @Override
             protected Void doInBackground(Void... params) {
@@ -153,7 +152,6 @@ public class DatabaseActivity extends AppCompatActivity {
     //Offline Sync
     /**
      * Sync the current context and the Mobile Service Sync Table
-     * @return
      */
     private AsyncTask<Void, Void, Void> sync() {
         AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>(){
@@ -174,7 +172,6 @@ public class DatabaseActivity extends AppCompatActivity {
 
     /**
      * Initialize local storage
-     * @return
      * @throws MobileServiceLocalStoreException
      * @throws ExecutionException
      * @throws InterruptedException
@@ -203,7 +200,6 @@ public class DatabaseActivity extends AppCompatActivity {
                     localStore.defineTable("DatabaseItem", tableDefinition);
 
                     SimpleSyncHandler handler = new SimpleSyncHandler();
-
                     syncContext.initialize(localStore, handler).get();
 
                 } catch (final Exception e) {
@@ -214,7 +210,6 @@ public class DatabaseActivity extends AppCompatActivity {
         };
         return runAsyncTask(task);
     }
-
 
     /*private List<DatabaseItem> refreshItemsFromMobileServiceTable() throws ExecutionException, InterruptedException {
         return mDatabaseTable.where().field("complete").eq(val(false)).execute().get();

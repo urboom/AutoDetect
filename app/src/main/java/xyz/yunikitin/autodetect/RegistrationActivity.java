@@ -158,14 +158,11 @@ public class RegistrationActivity extends AppCompatActivity {
      *            The item to Add
      */
     public DatabaseItem addItemInTable(DatabaseItem item) throws ExecutionException, InterruptedException {
-        DatabaseItem entity = mDatabaseTable.insert(item).get();
-        return entity;
+        return mDatabaseTable.insert(item).get();
     }
 
     /**
      * Run an ASync task on the corresponding executor
-     * @param task
-     * @return
      */
     private AsyncTask<Void, Void, Void> runAsyncTask(AsyncTask<Void, Void, Void> task) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -192,8 +189,10 @@ public class RegistrationActivity extends AppCompatActivity {
                     tableDefinition.put("id", ColumnDataType.String);
                     tableDefinition.put("text", ColumnDataType.String);
                     tableDefinition.put("complete", ColumnDataType.Boolean);
+                    tableDefinition.put("plateNumber", ColumnDataType.String);
+                    tableDefinition.put("brandAuto", ColumnDataType.String);
 
-                    localStore.defineTable("ToDoItem", tableDefinition);
+                    localStore.defineTable("DatabaseItem", tableDefinition);
 
                     SimpleSyncHandler handler = new SimpleSyncHandler();
                     syncContext.initialize(localStore, handler).get();

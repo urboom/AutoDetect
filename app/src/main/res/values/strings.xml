@@ -10,4 +10,11 @@
     <string name="city">Місто:</string>
     <string name="phone">Телефон:</string>
     <string name="email">Email:</string>
+    <string name="text_hint_brand">Mazda RX-8</string>
+    <string name="text_hint_color">Червоний</string>
+    <string name="text_hint_city">Вінниця</string>
+    <string name="text_hint_email">example@gmail.com</string>
+    <string name="text_hint_phone">067 00 00 000</string>
+    <string name="text_event">Опис події:</string>
+    <string name="text_registration">Зараєструвати</string>
 </resources>

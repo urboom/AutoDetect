@@ -30,14 +30,16 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/number"
-            android:id="@+id/plateNumber" />
+            android:id="@+id/plateNumber"
+            android:textColor="#000000" />
 
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/editPlateNumber"
             android:layout_weight="1"
-            android:inputType="textNoSuggestions" />
+            android:inputType="textNoSuggestions"
+            android:hint="АА 0000 АА" />
     </LinearLayout>
 
     <LinearLayout
@@ -52,14 +54,16 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/brand"
-            android:id="@+id/textBrand" />
+            android:id="@+id/textBrand"
+            android:textColor="#000000" />
 
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/editBrand"
             android:layout_weight="1"
-            android:inputType="textNoSuggestions"/>
+            android:inputType="textNoSuggestions"
+            android:hint="@string/text_hint_brand" />
     </LinearLayout>
 
     <LinearLayout
@@ -74,14 +78,16 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/color"
-            android:id="@+id/textColorAuto" />
+            android:id="@+id/textColorAuto"
+            android:textColor="#000000" />
 
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/editColorAuto"
             android:layout_weight="1"
-            android:inputType="textNoSuggestions"/>
+            android:inputType="textNoSuggestions"
+            android:hint="@string/text_hint_color" />
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
@@ -95,36 +101,17 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/city"
-            android:id="@+id/textCity" />
+            android:id="@+id/textCity"
+            android:textColor="#000000" />
 
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/editCityText"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/phone"
-            android:id="@+id/textPhone" />
-
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/editPhone"
             android:layout_weight="1"
-            android:inputType="phone" />
+            android:hint="@string/text_hint_city" />
     </LinearLayout>
+
 
     <LinearLayout
         android:orientation="horizontal"
@@ -138,14 +125,39 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/email"
-            android:id="@+id/textEmail" />
+            android:id="@+id/textEmail"
+            android:textColor="#000000" />
 
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/editEmail"
             android:layout_weight="1"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:hint="@string/text_hint_email" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/phone"
+            android:id="@+id/textPhone"
+            android:textColor="#000000" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/editPhone"
+            android:layout_weight="1"
+            android:inputType="phone"
+            android:hint="@string/text_hint_phone" />
     </LinearLayout>
 
     <LinearLayout
@@ -159,7 +171,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Опис події:"
+            android:text="@string/text_event"
             android:id="@+id/textEvent"
             android:layout_gravity="center_horizontal"
             android:textColor="#000000" />
@@ -171,7 +183,8 @@
             android:ems="10"
             android:id="@+id/editEvent"
             android:layout_gravity="center_horizontal"
-            android:elegantTextHeight="false" />
+            android:elegantTextHeight="false"
+            tools:targetApi="lollipop" />
     </LinearLayout>
 
     <Button
@@ -179,9 +192,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="addItem"
-        android:text="Зараєструвати"
+        android:text="@string/text_registration"
         android:layout_gravity="center_horizontal"
         android:elegantTextHeight="false"
         android:background="#3f51b4"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        tools:targetApi="lollipop" />
 </LinearLayout>
