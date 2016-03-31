@@ -112,14 +112,6 @@ public class DatabaseItem  {
         mId = id;
     }
 
-    public boolean isComplete() {
-        return mComplete;
-    }
-
-    public void setComplete(boolean complete) {
-        mComplete = complete;
-    }
-
     @Override
     public boolean equals(Object o) {
         return o instanceof DatabaseItem && ((DatabaseItem) o).mId == mId;

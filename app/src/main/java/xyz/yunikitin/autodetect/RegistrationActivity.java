@@ -91,7 +91,7 @@ public class RegistrationActivity extends AppCompatActivity {
             //mToDoTable = mClient.getSyncTable("ToDoItem", ToDoItem.class);
 
             //Init local storage
-            initLocalStore().get();
+            //initLocalStore().get();
 
             mNumberPlate = (EditText) findViewById(R.id.editPlateNumber);
             mBrandAuto = (EditText) findViewById(R.id.editBrand);
@@ -172,10 +172,10 @@ public class RegistrationActivity extends AppCompatActivity {
         }
     }
 
-    private AsyncTask<Void, Void, Void> initLocalStore() throws MobileServiceLocalStoreException, ExecutionException, InterruptedException {
+    /*private AsyncTask<Void, Void, Void> initLocalStore() throws MobileServiceLocalStoreException, ExecutionException, InterruptedException {
 
         AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
-            @Override
+             @Override
             protected Void doInBackground(Void... params) {
                 try {
                     MobileServiceSyncContext syncContext = mClient.getSyncContext();
@@ -205,7 +205,7 @@ public class RegistrationActivity extends AppCompatActivity {
         };
 
         return runAsyncTask(task);
-    }
+    }*/
     /**
      * Creates a dialog and shows it
      *
