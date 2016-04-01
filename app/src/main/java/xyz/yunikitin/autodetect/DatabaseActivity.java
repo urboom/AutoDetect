@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.common.util.concurrent.FutureCallback;
@@ -49,6 +50,7 @@ public class DatabaseActivity extends AppCompatActivity {
      //Mobile Service Client reference
     private MobileServiceClient mClient;
 
+    private SQLiteLocalStore sqliteDB;
 
      //Mobile Service Table used to access and Sync data
     private MobileServiceSyncTable<DatabaseItem> mDatabaseItem;
@@ -76,14 +78,17 @@ public class DatabaseActivity extends AppCompatActivity {
 
             // Create an adapter to bind the items with the view
             mAdapter = new DatabaseItemAdapter(this, R.layout.row_list_database);
-            ListView listViewToDo = (ListView) findViewById(R.id.listViewDatabase);
+            final ListView listViewToDo = (ListView) findViewById(R.id.listViewDatabase);
             listViewToDo.setAdapter(mAdapter);
             listViewToDo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
                     //Toast.makeText(getApplicationContext(),"Click ListItem Number " + position, Toast.LENGTH_LONG).show();
+                    String str = listViewToDo.getItemAtPosition(position).toString();
+                    Toast.makeText(getApplicationContext(), str, Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(DatabaseActivity.this, ShowDBActivity.class);
+                    intent.putExtra("position", str);
                     startActivity(intent);
                 }
             });
@@ -97,7 +102,6 @@ public class DatabaseActivity extends AppCompatActivity {
             createAndShowDialog(e, "Error");
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -187,7 +191,7 @@ public class DatabaseActivity extends AppCompatActivity {
                     if (syncContext.isInitialized())
                         return null;
 
-                    SQLiteLocalStore localStore = new SQLiteLocalStore(mClient.getContext(), "OfflineStore", null, 1);
+                    sqliteDB = new SQLiteLocalStore(mClient.getContext(), "OfflineStore", null, 1);
 
                     Map<String, ColumnDataType> tableDefinition = new HashMap<>();
                     tableDefinition.put("id", ColumnDataType.String);
@@ -196,11 +200,11 @@ public class DatabaseActivity extends AppCompatActivity {
                     tableDefinition.put("plateNumber", ColumnDataType.String);
                     tableDefinition.put("brandAuto", ColumnDataType.String);
 
-                    localStore.defineTable("DatabaseItem", tableDefinition);
+                    sqliteDB.defineTable("DatabaseItem", tableDefinition);
 
                     SimpleSyncHandler handler = new SimpleSyncHandler();
 
-                    syncContext.initialize(localStore, handler).get();
+                    syncContext.initialize(sqliteDB, handler).get();
 
                 } catch (final Exception e) {
                     createAndShowDialogFromTask(e, "Error");
