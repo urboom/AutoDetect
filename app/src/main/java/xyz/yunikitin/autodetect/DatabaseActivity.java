@@ -2,6 +2,7 @@ package xyz.yunikitin.autodetect;
 
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.view.MenuItemCompat;
@@ -9,8 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -74,6 +78,15 @@ public class DatabaseActivity extends AppCompatActivity {
             mAdapter = new DatabaseItemAdapter(this, R.layout.row_list_database);
             ListView listViewToDo = (ListView) findViewById(R.id.listViewDatabase);
             listViewToDo.setAdapter(mAdapter);
+            listViewToDo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    //Toast.makeText(getApplicationContext(),"Click ListItem Number " + position, Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(DatabaseActivity.this, ShowDBActivity.class);
+                    startActivity(intent);
+                }
+            });
 
             // Load the items from the Mobile Service
             refreshItemsFromTable();
@@ -84,6 +97,7 @@ public class DatabaseActivity extends AppCompatActivity {
             createAndShowDialog(e, "Error");
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
