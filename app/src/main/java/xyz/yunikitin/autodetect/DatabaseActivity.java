@@ -14,8 +14,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -84,9 +82,7 @@ public class DatabaseActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
-                    //Toast.makeText(getApplicationContext(),"Click ListItem Number " + position, Toast.LENGTH_LONG).show();
                     String str = listViewToDo.getItemAtPosition(position).toString();
-                    Toast.makeText(getApplicationContext(), str, Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(DatabaseActivity.this, ShowDBActivity.class);
                     intent.putExtra("position", str);
                     startActivity(intent);
@@ -156,7 +152,7 @@ public class DatabaseActivity extends AppCompatActivity {
                         }
                     });
                 } catch (final Exception e){
-                    createAndShowDialogFromTask(e, "Error");
+                    createAndShowDialogFromTask(e);
                 }
 
                 return null;
@@ -207,7 +203,7 @@ public class DatabaseActivity extends AppCompatActivity {
                     syncContext.initialize(sqliteDB, handler).get();
 
                 } catch (final Exception e) {
-                    createAndShowDialogFromTask(e, "Error");
+                    createAndShowDialogFromTask(e);
                 }
 
                 return null;
@@ -227,7 +223,7 @@ public class DatabaseActivity extends AppCompatActivity {
                     syncContext.push().get();
                     mDatabaseItem.pull(null).get();
                 } catch (final Exception e) {
-                    createAndShowDialogFromTask(e, "Error");
+                    createAndShowDialogFromTask(e);
                 }
                 return null;
             }
@@ -235,7 +231,7 @@ public class DatabaseActivity extends AppCompatActivity {
         return runAsyncTask(task);
     }
 
-    private void createAndShowDialogFromTask(final Exception exception, String title) {
+    private void createAndShowDialogFromTask(final Exception exception) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

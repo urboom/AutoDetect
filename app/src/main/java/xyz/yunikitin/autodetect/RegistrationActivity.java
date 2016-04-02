@@ -47,10 +47,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText mPhone;
     private EditText mEmail;
 
-    /**
-     * Initializes the activity
-     */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
