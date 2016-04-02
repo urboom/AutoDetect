@@ -19,7 +19,8 @@
         </activity>
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".TakePhotoActivity" />
-        <activity android:name=".DatabaseActivity"></activity>
+        <activity android:name=".DatabaseActivity" />
+        <activity android:name=".ShowDBActivity"/>
     </application>
 
 </manifest>

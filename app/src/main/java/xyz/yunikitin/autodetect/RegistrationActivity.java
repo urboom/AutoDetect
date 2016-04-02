@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
+import com.microsoft.windowsazure.mobileservices.MobileServiceList;
 import com.microsoft.windowsazure.mobileservices.table.MobileServiceTable;
 import com.microsoft.windowsazure.mobileservices.table.sync.MobileServiceSyncContext;
 import com.microsoft.windowsazure.mobileservices.table.sync.localstore.ColumnDataType;
@@ -29,7 +30,6 @@ import static com.microsoft.windowsazure.mobileservices.table.query.QueryOperati
 
 public class RegistrationActivity extends AppCompatActivity {
 
-
     /**
      * Mobile Service Client reference
      */
@@ -40,35 +40,12 @@ public class RegistrationActivity extends AppCompatActivity {
      */
     private MobileServiceTable<DatabaseItem> mDatabaseTable;
 
-    /**
-     * Adapter to sync the items list with the view
-     */
-    private DatabaseItemAdapter mAdapter;
-
-    //Offline Sync
-    /**
-     * Mobile Service Table used to access and Sync data
-     */
-    //private MobileServiceSyncTable<ToDoItem> mToDoTable;
-
-    /**
-     * Adapter to sync the items list with the view
-     */
-   // private ToDoItemAdapter mAdapter;
-
-    /**
-     * EditText containing the "New To Do" text
-     */
     private EditText mBrandAuto, mEvent;
     private EditText mNumberPlate;
     private EditText mColorAuto;
     private EditText mCity;
     private EditText mPhone;
     private EditText mEmail;
-
-    /**
-     * Initializes the activity
-     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,12 +63,6 @@ public class RegistrationActivity extends AppCompatActivity {
             // Get the Mobile Service Table instance to use
 
             mDatabaseTable = mClient.getTable(DatabaseItem.class);
-
-            // Offline Sync
-            //mToDoTable = mClient.getSyncTable("ToDoItem", ToDoItem.class);
-
-            //Init local storage
-            initLocalStore().get();
 
             mNumberPlate = (EditText) findViewById(R.id.editPlateNumber);
             mBrandAuto = (EditText) findViewById(R.id.editBrand);
@@ -147,8 +118,6 @@ public class RegistrationActivity extends AppCompatActivity {
         mPhone.setText("");
         mEmail.setText("");
         mEvent.setText("");
-
-
     }
 
     /**
@@ -172,48 +141,6 @@ public class RegistrationActivity extends AppCompatActivity {
         }
     }
 
-    private AsyncTask<Void, Void, Void> initLocalStore() throws MobileServiceLocalStoreException, ExecutionException, InterruptedException {
-
-        AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                try {
-                    MobileServiceSyncContext syncContext = mClient.getSyncContext();
-
-                    if (syncContext.isInitialized())
-                        return null;
-
-                    SQLiteLocalStore localStore = new SQLiteLocalStore(mClient.getContext(), "OfflineStore", null, 1);
-
-                    Map<String, ColumnDataType> tableDefinition = new HashMap<>();
-                    tableDefinition.put("id", ColumnDataType.String);
-                    tableDefinition.put("text", ColumnDataType.String);
-                    tableDefinition.put("complete", ColumnDataType.Boolean);
-                    tableDefinition.put("plateNumber", ColumnDataType.String);
-                    tableDefinition.put("brandAuto", ColumnDataType.String);
-
-                    localStore.defineTable("DatabaseItem", tableDefinition);
-
-                    SimpleSyncHandler handler = new SimpleSyncHandler();
-                    syncContext.initialize(localStore, handler).get();
-
-                } catch (final Exception e) {
-                   createAndShowDialogFromTask(e, "Error");
-                }
-                return null;
-            }
-        };
-
-        return runAsyncTask(task);
-    }
-    /**
-     * Creates a dialog and shows it
-     *
-     * @param message
-     *            The dialog message
-     * @param title
-     *            The dialog title
-     */
     private void createAndShowDialog(final String message, final String title) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(message);
@@ -221,14 +148,6 @@ public class RegistrationActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-    /**
-     * Creates a dialog and shows it
-     *
-     * @param exception
-     *            The exception to show in the dialog
-     * @param title
-     *            The dialog title
-     */
     private void createAndShowDialog(Exception exception, String title) {
         Throwable ex = exception;
         if(exception.getCause() != null){
@@ -237,14 +156,6 @@ public class RegistrationActivity extends AppCompatActivity {
         createAndShowDialog(ex.getMessage(), title);
     }
 
-    /**
-     * Creates a dialog and shows it
-     *
-     * @param exception
-     *            The exception to show in the dialog
-     * @param title
-     *            The dialog title
-     */
     private void createAndShowDialogFromTask(final Exception exception, String title) {
         runOnUiThread(new Runnable() {
             @Override
