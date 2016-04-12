@@ -1,4 +1,4 @@
-package xyz.yunikitin.autodetect;
+package xyz.yunikitin.autodetect.Database;
 
 
 public class DatabaseItem  {

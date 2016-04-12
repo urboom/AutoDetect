@@ -18,4 +18,6 @@
     <string name="text_event">Опис події:</string>
     <string name="text_registration">Зараєструвати</string>
     <string name="menu_refresh">Оновити</string>
+    <string name="send_button">Send Notification</string>
+    <string name="notification_message_hint">Enter notification message text</string>
 </resources>
