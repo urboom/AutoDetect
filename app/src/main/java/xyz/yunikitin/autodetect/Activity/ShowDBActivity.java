@@ -1,4 +1,4 @@
-package xyz.yunikitin.autodetect;
+package xyz.yunikitin.autodetect.Activity;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -15,11 +15,14 @@ import com.microsoft.windowsazure.mobileservices.table.MobileServiceTable;
 
 import java.net.MalformedURLException;
 
+import xyz.yunikitin.autodetect.Database.DatabaseItem;
+import xyz.yunikitin.autodetect.R;
+
 public class ShowDBActivity extends AppCompatActivity {
 
     private static final String TAG = "MyApp";
     private String number;
-    private TextView mBrandAuto, mEvent, mNumberPlate,  mColorAuto, mCity, mPhone, mEmail;
+    private TextView mBrandAuto,mEvent, mColorAuto,mCity, mPhone, mEmail;
     private String brand, color, city, email, phone, event;
     /**
      * Mobile Service Client reference
@@ -41,13 +44,12 @@ public class ShowDBActivity extends AppCompatActivity {
             mClient = new MobileServiceClient(
                     "https://platedetectapp.azurewebsites.net",
                     this);
-            Log.i(TAG, "Read object with ID " + mClient);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
         mDatabaseTable = mClient.getTable(DatabaseItem.class);
 
-        mNumberPlate = (TextView) findViewById(R.id.textNumber);
+        TextView mNumberPlate = (TextView) findViewById(R.id.textNumber);
         mBrandAuto = (TextView) findViewById(R.id.textBrand);
         mColorAuto = (TextView) findViewById(R.id.textColor);
         mCity = (TextView) findViewById(R.id.textCity);
@@ -58,12 +60,10 @@ public class ShowDBActivity extends AppCompatActivity {
         Intent intent = getIntent();
         number = intent.getStringExtra("position");
         mNumberPlate.setText(number);
+        getItemDB();
     }
 
     public void onClick(View view) {
-        if (mClient == null) {
-            return;
-        }
         getItemDB();
         mBrandAuto.setText(brand);
         mColorAuto.setText(color);
@@ -78,20 +78,24 @@ public class ShowDBActivity extends AppCompatActivity {
             @Override
             protected Void doInBackground(Void... params) {
                 try {
-                    final MobileServiceList<DatabaseItem> result =
-                            mDatabaseTable.where().field("platenumber").eq(number).execute().get();
+                    final MobileServiceList<DatabaseItem> result = mDatabaseTable.where().field("platenumber").eq(number).execute().get();
                     Log.i(TAG, "Read object with ID " + result);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
                     for (DatabaseItem item : result) {
-                        Log.i(TAG, "Read object with ID " + item.getBrandAuto());
-                        brand = item.getBrandAuto();
-                        Log.i(TAG, "Read object with ID " + item.getCity());
-                        color = item.getColorAuto();
-                        Log.i(TAG, "Read object with ID " + item.getPhone());
-                        city = item.getCity();
-                        email = item.getEmail();
-                        phone = item.getPhone();
-                        event = item.getEvent();
+                            Log.i(TAG, "Read object with ID " + item.getBrandAuto());
+                            brand = item.getBrandAuto();
+                            Log.i(TAG, "Read object with ID " + item.getCity());
+                            color = item.getColorAuto();
+                            Log.i(TAG, "Read object with ID " + item.getPhone());
+                            city = item.getCity();
+                            email = item.getEmail();
+                            phone = item.getPhone();
+                            event = item.getEvent();
                     }
+                            }
+                    });
                 } catch (Exception exception) {
                     // createAndShowDialog(exception, "Error");
                 }

@@ -1,4 +1,4 @@
-package xyz.yunikitin.autodetect;
+package xyz.yunikitin.autodetect.Activity;
 
 
 import android.app.AlertDialog;
@@ -38,6 +38,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+
+import xyz.yunikitin.autodetect.Database.DatabaseItem;
+import xyz.yunikitin.autodetect.Database.DatabaseItemAdapter;
+import xyz.yunikitin.autodetect.R;
 
 import static com.microsoft.windowsazure.mobileservices.table.query.QueryOperations.val;
 
@@ -163,7 +167,7 @@ public class DatabaseActivity extends AppCompatActivity {
     }
 
 
-      //Refresh the list with the items in the Mobile Service Sync Table
+      //Refresh the lit with the items in the Mobile Service Sync Table
     private List<DatabaseItem> refreshItemsFromMobileServiceTableSyncTable() throws ExecutionException, InterruptedException {
         //sync the data
         sync().get();
